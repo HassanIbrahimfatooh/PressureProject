@@ -9,7 +9,9 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="send_reset_password_link">Reset Password</string>
     <string name="no_account_yet_create_one">No account yet? Create one</string>
+    <string name="forget_password">Forget Password?</string>
 
     <string name="imports">Import</string>
     <string name="gallery">Import</string>

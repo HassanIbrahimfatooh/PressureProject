@@ -140,4 +140,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(FirstIntent);
         finish();
     }
+
+    public void ForgetPassword(View view) {
+        Intent intent = new Intent(this, ForgetPassword.class);
+        startActivity(intent);
+        finish();
+    }
 }
