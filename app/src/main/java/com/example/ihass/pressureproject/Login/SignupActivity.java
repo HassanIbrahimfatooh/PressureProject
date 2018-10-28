@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,15 +21,17 @@ import com.example.ihass.pressureproject.Classes.User;
 import com.example.ihass.pressureproject.Implementation.MainView;
 import com.example.ihass.pressureproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -40,7 +43,6 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     // Data Base Instance
-    private FirebaseDatabase fire_base = FirebaseDatabase.getInstance();
     DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
 
     private EditText NameText, AgeText, EmailText, MobileNumberText, PasswordText, ReEnterPasswordText;
@@ -60,42 +62,8 @@ public class SignupActivity extends AppCompatActivity {
         MobileNumberText = (EditText) findViewById(R.id.input_mobile);
         SignUpButton = (Button) findViewById(R.id.btn_signup);
 
-        OnDataChanged();
     }
 
-    private void OnDataChanged() {
-        final String name = NameText.getText().toString();
-        final String email = EmailText.getText().toString();
-        final String password = PasswordText.getText().toString();
-        final int age = Integer.parseInt(AgeText.getText().toString());
-        final int phoneNumber = Integer.parseInt(MobileNumberText.getText().toString());
-
-        data_refrence.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Toast.makeText(getApplicationContext(), "Data changes" + value, Toast.LENGTH_LONG).show();
-                Log.d(TAG, "Value is: " + value);
-                WriteDataToNewUser(FirebaseAuth.getInstance().getUid(), name, email, password, age, phoneNumber);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Failed to read value
-                Toast.makeText(getApplicationContext(), "Failed to read value.", Toast.LENGTH_LONG).show();
-                Log.w(TAG, "Failed to read value.");
-            }
-        });
-
-    }
-
-    private void WriteDataToNewUser(String userId, String name, String email, String password, int age, int phoneNumber) {
-        User user = new User(name, email, password, age, phoneNumber);
-
-        data_refrence.child("Users").child(userId).setValue(user);
-    }
 
     public void LogInForm(View view) {
         Intent LogInIntent = new Intent(this, LoginActivity.class);
@@ -118,55 +86,6 @@ public class SignupActivity extends AppCompatActivity {
         // TODO: Implement your own authentication logic here.
         CreateNewUser();
 
-    }
-
-    private void CreateNewUser() {
-
-        final String name = NameText.getText().toString();
-        final String email = EmailText.getText().toString();
-        final String password = PasswordText.getText().toString();
-        final int age = Integer.parseInt(AgeText.getText().toString());
-        final int phoneNumber = Integer.parseInt(MobileNumberText.getText().toString());
-
-        final ProgressDialog progressDialog = new ProgressDialog(this,
-                R.style.Theme_AppCompat_Light_DarkActionBar);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-
-        // Creating a user in data base
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show();
-
-                            // Pushing data to the user's ID
-                            WriteDataToNewUser(FirebaseAuth.getInstance().getUid(), name, email, password, age, phoneNumber);
-
-                            // OnSignUpSuccess
-                            progressDialog.dismiss();
-                            onSignUpSuccess();
-
-                        } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                            Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
-
-                            // OnSignUpSuccess
-                            progressDialog.dismiss();
-                            onSignUpSuccess();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-
-                            // onSignUpFailed
-                            progressDialog.dismiss();
-                            onSignUpFailed();
-                        }
-                    }
-                });
     }
 
     public boolean CheckInternetConnection() {
@@ -250,8 +169,104 @@ public class SignupActivity extends AppCompatActivity {
         return valid;
     }
 
+    public void CreateNewUser() {
 
-    private void onSignUpFailed() {
+        final String name = NameText.getText().toString();
+        final String email = EmailText.getText().toString();
+        final String password = PasswordText.getText().toString();
+        final int age = Integer.parseInt(AgeText.getText().toString());
+        final int phoneNumber = Integer.parseInt(MobileNumberText.getText().toString());
+
+        final ProgressDialog progressDialog = new ProgressDialog(this,
+                R.style.Theme_AppCompat_Light_DarkActionBar);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
+
+        // Creating a user in data base
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(getApplicationContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show();
+
+                            // Pushing data to the user's ID
+                            WriteDataToNewUser(FirebaseAuth.getInstance().getUid(), name, email, password, age, phoneNumber);
+
+                            // OnSignUpSuccess
+                            progressDialog.dismiss();
+                            onSignUpSuccess();
+
+                        } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                            Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
+
+                            // OnSignUpSuccess
+                            progressDialog.dismiss();
+                            onSignUpSuccess();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+
+                            // onSignUpFailed
+                            progressDialog.dismiss();
+                            onSignUpFailed();
+                        }
+                    }
+                });
+    }
+
+    public void WriteDataToNewUser(String userId, String name, String email, String password, int age, int phoneNumber) {
+        User user = new User(name, email, password, age, phoneNumber);
+
+        // For Creating new user in (Accounts) table
+        data_refrence.child("Accounts").child(userId).child("Personal Data").setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Data is added successfully", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error while restoring Data", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // For Checking any changes in the table
+        data_refrence.child("Accounts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "User had been Added", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Toast.makeText(getApplicationContext(), "User had been Edited", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Toast.makeText(getApplicationContext(), "User had been Removed", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Toast.makeText(getApplicationContext(), "User had been Moved", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "User had been Cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void onSignUpFailed() {
         Toast.makeText(getBaseContext(), "SignUp failed", Toast.LENGTH_LONG).show();
         SignUpButton.setEnabled(true);
     }

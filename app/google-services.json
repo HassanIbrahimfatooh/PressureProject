@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "92591005387",
+    "firebase_url": "https://pressureproject-c950d.firebaseio.com",
+    "project_id": "pressureproject-c950d",
+    "storage_bucket": "pressureproject-c950d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92591005387:android:9db0fcb3532b618d",
+        "android_client_info": {
+          "package_name": "com.example.ihass.pressureproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "92591005387-0dkemhvt7hv6s47hfne7gshl8nv718eu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ihass.pressureproject",
+            "certificate_hash": "3e5f0677fd175bb56636a921724efb862bef10e3"
+          }
+        },
+        {
+          "client_id": "92591005387-3kv46nubb07ohpf227efvl44c26f289e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNbmij5G1Pjip0EUs2LZ1dxaivek_4i6Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "92591005387-3kv46nubb07ohpf227efvl44c26f289e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
