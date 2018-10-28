@@ -1,6 +1,7 @@
 package com.example.ihass.pressureproject.Login;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +55,12 @@ public class ForgetPassword extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+    }
+
+    public void SignUpForm(View view) {
+        Intent SignUpIntent = new Intent(this, SignupActivity.class);
+        startActivity(SignUpIntent);
+        finish();
     }
 
 }
