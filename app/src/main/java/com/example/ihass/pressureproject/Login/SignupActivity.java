@@ -24,8 +24,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -38,7 +41,7 @@ public class SignupActivity extends AppCompatActivity {
 
     // Data Base Instance
     private FirebaseDatabase fire_base = FirebaseDatabase.getInstance();
-    private DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
 
     private EditText NameText, AgeText, EmailText, MobileNumberText, PasswordText, ReEnterPasswordText;
     private Button SignUpButton;
@@ -50,12 +53,41 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         NameText = (EditText) findViewById(R.id.input_name);
-        AgeText = (EditText) findViewById(R.id.input_age);
         EmailText = (EditText) findViewById(R.id.input_email);
-        MobileNumberText = (EditText) findViewById(R.id.input_mobile);
         PasswordText = (EditText) findViewById(R.id.input_password);
         ReEnterPasswordText = (EditText) findViewById(R.id.input_reEnterPassword);
+        AgeText = (EditText) findViewById(R.id.input_age);
+        MobileNumberText = (EditText) findViewById(R.id.input_mobile);
         SignUpButton = (Button) findViewById(R.id.btn_signup);
+
+        OnDataChanged();
+    }
+
+    private void OnDataChanged() {
+        final String name = NameText.getText().toString();
+        final String email = EmailText.getText().toString();
+        final String password = PasswordText.getText().toString();
+        final int age = Integer.parseInt(AgeText.getText().toString());
+        final int phoneNumber = Integer.parseInt(MobileNumberText.getText().toString());
+
+        data_refrence.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Toast.makeText(getApplicationContext(), "Data changes" + value, Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Value is: " + value);
+                WriteDataToNewUser(FirebaseAuth.getInstance().getUid(), name, email, password, age, phoneNumber);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Toast.makeText(getApplicationContext(), "Failed to read value.", Toast.LENGTH_LONG).show();
+                Log.w(TAG, "Failed to read value.");
+            }
+        });
 
     }
 

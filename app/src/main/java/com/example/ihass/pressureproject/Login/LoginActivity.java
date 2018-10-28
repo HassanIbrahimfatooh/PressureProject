@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             FirebaseUser user = mAuth.getCurrentUser();
                             assert user != null;
+
                             Toast.makeText(getApplicationContext(), "Authenticated Successfully", Toast.LENGTH_LONG).show();
                             Toast.makeText(getApplicationContext(), user.getEmail(), Toast.LENGTH_LONG).show();
 
