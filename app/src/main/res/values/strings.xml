@@ -13,6 +13,12 @@
     <string name="no_account_yet_create_one">No account yet? Create one</string>
     <string name="forget_password">Forget Password?</string>
 
+    <string name="upper_measure">Upper</string>
+    <string name="lower_measure">Lower</string>
+    <string name="Day">Day</string>
+    <string name="Time">Time</string>
+    <string name="create_measure">Create New Measure</string>
+
     <string name="imports">Import</string>
     <string name="gallery">Import</string>
     <string name="slideshow">Import</string>

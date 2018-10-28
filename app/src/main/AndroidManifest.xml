@@ -19,7 +19,8 @@
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Login.SignupActivity" />
         <activity android:name=".Implementation.MainView" />
-        <activity android:name=".Login.ForgetPassword"></activity>
+        <activity android:name=".Login.ForgetPassword" />
+        <activity android:name=".Implementation.MeasureActivity"></activity>
     </application>
 
 </manifest>
