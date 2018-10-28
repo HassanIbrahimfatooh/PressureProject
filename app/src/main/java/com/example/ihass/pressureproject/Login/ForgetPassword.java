@@ -42,11 +42,11 @@ public class ForgetPassword extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        FirebaseAuth.getInstance().sendPasswordResetEmail("user@example.com").addOnCompleteListener(new OnCompleteListener<Void>() {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(ForgetPassword.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgetPassword.this, "We have sent you a reset email!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(ForgetPassword.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
                 }
