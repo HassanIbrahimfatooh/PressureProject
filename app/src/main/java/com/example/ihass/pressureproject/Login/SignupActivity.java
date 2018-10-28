@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ihass.pressureproject.Classes.User;
 import com.example.ihass.pressureproject.Implementation.MainView;
 import com.example.ihass.pressureproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +38,7 @@ public class SignupActivity extends AppCompatActivity {
 
     // Data Base Instance
     private FirebaseDatabase fire_base = FirebaseDatabase.getInstance();
-    private DatabaseReference data_refrence = fire_base.getReference();
+    private DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
 
     private EditText NameText, AgeText, EmailText, MobileNumberText, PasswordText, ReEnterPasswordText;
     private Button SignUpButton;
@@ -58,6 +59,12 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    private void WriteDataToNewUser(String userId, String name, String email, String password, int age, int phoneNumber) {
+        User user = new User(name, email, password, age, phoneNumber);
+
+        data_refrence.child("Users").child(userId).setValue(user);
+    }
+
     public void LogInForm(View view) {
         Intent LogInIntent = new Intent(this, LoginActivity.class);
         startActivity(LogInIntent);
@@ -65,7 +72,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void SignUpUser(View view) {
-        Log.d(TAG, "Signup");
+        Log.d(TAG, "Sign-up");
 
         // Returns an error If there is no internet connection Or there is any invalid input
         if (!CheckInternetConnection() || !Validate()) {
@@ -83,11 +90,11 @@ public class SignupActivity extends AppCompatActivity {
 
     private void CreateNewUser() {
 
-        String name = NameText.getText().toString();
-        String email = EmailText.getText().toString();
-        String password = PasswordText.getText().toString();
-        int age = Integer.parseInt(AgeText.getText().toString());
-        int mobile = Integer.parseInt(MobileNumberText.getText().toString());
+        final String name = NameText.getText().toString();
+        final String email = EmailText.getText().toString();
+        final String password = PasswordText.getText().toString();
+        final int age = Integer.parseInt(AgeText.getText().toString());
+        final int phoneNumber = Integer.parseInt(MobileNumberText.getText().toString());
 
         final ProgressDialog progressDialog = new ProgressDialog(this,
                 R.style.Theme_AppCompat_Light_DarkActionBar);
@@ -103,6 +110,9 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show();
+
+                            // Pushing data to the user's ID
+                            WriteDataToNewUser(FirebaseAuth.getInstance().getUid(), name, email, password, age, phoneNumber);
 
                             // OnSignUpSuccess
                             progressDialog.dismiss();
@@ -137,7 +147,6 @@ public class SignupActivity extends AppCompatActivity {
             //you are now connected to a network
             connected = true;
         } else {
-            connected = false;
             Toast toast = Toast.makeText(getApplicationContext(), "Connection Error!",
                     Toast.LENGTH_SHORT);
             TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
