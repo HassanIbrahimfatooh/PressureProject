@@ -8,12 +8,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.ihass.pressureproject.R;
 
+
 public class MainView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
 
     private DrawerLayout mDrawerLayout;
 
@@ -35,13 +38,8 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // TODO : Implement this function as required.
-        // I don't know the Required ^_^
-        SetUpViewPager();
     }
 
-    private void SetUpViewPager() {
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -63,6 +61,14 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
             Toast.makeText(getApplicationContext(), "Manage clicked", Toast.LENGTH_LONG).show();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.drawer_view, menu);
         return true;
     }
 
