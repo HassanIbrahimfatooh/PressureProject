@@ -20,7 +20,7 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Main");
+        setTitle("Main View");
         setContentView(R.layout.activity_main_view);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
