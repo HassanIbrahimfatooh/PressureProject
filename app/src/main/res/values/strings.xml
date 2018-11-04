@@ -23,4 +23,7 @@
     <string name="gallery">Import</string>
     <string name="slideshow">Import</string>
     <string name="tools">Import</string>
+    <string name="navigation_drawer_open">nav Open</string>
+    <string name="navigation_drawer_close">nav Close</string>
+
 </resources>
