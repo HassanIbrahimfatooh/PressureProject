@@ -19,10 +19,10 @@
     <string name="Time">Time</string>
     <string name="create_measure">Create New Measure</string>
 
-    <string name="imports">Import</string>
-    <string name="gallery">Import</string>
-    <string name="slideshow">Import</string>
-    <string name="tools">Import</string>
+    <string name="Nav">Nav</string>
+    <string name="Gallery">Gallery</string>
+    <string name="Slide">Slide</string>
+    <string name="Manage">Manage</string>
     <string name="navigation_drawer_open">nav Open</string>
     <string name="navigation_drawer_close">nav Close</string>
 

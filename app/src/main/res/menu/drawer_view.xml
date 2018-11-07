@@ -3,16 +3,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:title="@string/imports" />
+            android:title="@string/Nav" />
         <item
             android:id="@+id/nav_gallery"
-            android:title="@string/gallery" />
+            android:title="@string/Gallery" />
         <item
             android:id="@+id/nav_slideshow"
-            android:title="@string/slideshow" />
+            android:title="@string/Slide" />
         <item
             android:id="@+id/nav_manage"
-            android:title="@string/tools" />
+            android:title="@string/Manage" />
     </group>
 </menu>
 
