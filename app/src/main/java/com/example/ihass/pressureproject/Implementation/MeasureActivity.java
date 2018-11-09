@@ -20,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 public class MeasureActivity extends AppCompatActivity {
@@ -34,6 +33,8 @@ public class MeasureActivity extends AppCompatActivity {
     // Date Variables
     Calendar calander = Calendar.getInstance();
     SimpleDateFormat simpleDateFormat;
+
+    private Toast toast;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -55,19 +56,30 @@ public class MeasureActivity extends AppCompatActivity {
         DayText.setText(DateFormat.getDateInstance(DateFormat.FULL).format(calander.getTime()));
 
         // Writing Time into text
-        TimeText.setText(String.valueOf(new Date(new Date().getTime())));
+        TimeText.setText(String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+    }
+
+    @SuppressLint("ShowToast")
+    public void ShowToast(String message) {
+        try {
+            toast.getView().isShown();
+            toast.setText(message);
+        } catch (Exception e) {
+            toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        }
+        toast.show();
     }
 
     public void CreateNewMeasure(View view) {
 
         if (UpperMeasureText.getText().toString().equals("") || LowerMeasureText.getText().toString().equals("") || DayText.getText().toString().equals("") || TimeText.getText().toString().equals("")) {
             // Showing Failure Message
-            Toast.makeText(getApplicationContext(), "Fill necessary inputs", Toast.LENGTH_SHORT).show();
+            ShowToast("Fill necessary inputs");
         } else {
             int upperMeasure = Integer.parseInt(UpperMeasureText.getText().toString());
             int lowerMeasure = Integer.parseInt(LowerMeasureText.getText().toString());
             String Day = DayText.getText().toString();
-            int Time = Integer.parseInt(TimeText.getText().toString());
+            int Time = Integer.parseInt(String.valueOf(TimeText.getText()));
 
             // Creating measure instance
             Measurement measurement = new Measurement(upperMeasure, lowerMeasure, Day, Time);
@@ -80,8 +92,7 @@ public class MeasureActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void aVoid) {
                     // Showing Success Message
-                    Toast.makeText(getApplicationContext(),
-                            "Measure Created Successfully", Toast.LENGTH_SHORT).show();
+                    ShowToast("Measure Created Successfully");
                     Intent MainActivityIntent = new Intent(MeasureActivity.this, MainView.class);
                     startActivity(MainActivityIntent);
                     finish();
@@ -89,8 +100,7 @@ public class MeasureActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(),
-                            "An Error has occurred", Toast.LENGTH_SHORT).show();
+                    ShowToast("An Error has occurred");
                 }
             });
         }

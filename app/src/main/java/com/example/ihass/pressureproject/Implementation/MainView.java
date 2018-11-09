@@ -1,5 +1,7 @@
 package com.example.ihass.pressureproject.Implementation;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.ihass.pressureproject.R;
@@ -21,6 +24,7 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,25 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
 
     }
 
+    @SuppressLint("ShowToast")
+    public void ShowToast(String message) {
+        try {
+            toast.getView().isShown();
+            toast.setText(message);
+        } catch (Exception e) {
+            toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        }
+        toast.show();
+    }
+
+    public void add_new_measure(View view) {
+        ShowToast("Create New Measure");
+        Intent NewMeasureIntent = new Intent(this, MeasureActivity.class);
+        startActivity(NewMeasureIntent);
+
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item)) {
@@ -63,13 +86,13 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_camera) {
-            Toast.makeText(getApplicationContext(), "Nav Bar clicked", Toast.LENGTH_LONG).show();
+            ShowToast("Nav Bar clicked");
         } else if (id == R.id.nav_gallery) {
-            Toast.makeText(getApplicationContext(), "Gallery clicked", Toast.LENGTH_LONG).show();
+            ShowToast("Gallery clicked");
         } else if (id == R.id.nav_slideshow) {
-            Toast.makeText(getApplicationContext(), "Slide Show clicked", Toast.LENGTH_LONG).show();
+            ShowToast("Slide Show clicked");
         } else if (id == R.id.nav_manage) {
-            Toast.makeText(getApplicationContext(), "Manage clicked", Toast.LENGTH_LONG).show();
+            ShowToast("Manage clicked");
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
