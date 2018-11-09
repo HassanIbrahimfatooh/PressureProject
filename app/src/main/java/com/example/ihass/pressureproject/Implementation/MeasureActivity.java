@@ -2,9 +2,12 @@ package com.example.ihass.pressureproject.Implementation;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,11 +21,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
 public class MeasureActivity extends AppCompatActivity {
+
+    private Toast toast;
 
     // Database instances
     private DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
@@ -32,11 +36,8 @@ public class MeasureActivity extends AppCompatActivity {
 
     // Date Variables
     Calendar calander = Calendar.getInstance();
-    SimpleDateFormat simpleDateFormat;
 
-    private Toast toast;
-
-    @SuppressLint("SimpleDateFormat")
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +50,13 @@ public class MeasureActivity extends AppCompatActivity {
         DayText = (EditText) findViewById(R.id.Day);
         TimeText = (EditText) findViewById(R.id.Time);
 
-        // Date format
-        simpleDateFormat = new SimpleDateFormat("hh:mm:ss a");
-
         // Writing Date into text
         DayText.setText(DateFormat.getDateInstance(DateFormat.FULL).format(calander.getTime()));
 
         // Writing Time into text
-        TimeText.setText(String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        TimeText.setText(String.valueOf(today.format("%k:%M:%S")));
     }
 
     @SuppressLint("ShowToast")
@@ -79,7 +79,7 @@ public class MeasureActivity extends AppCompatActivity {
             int upperMeasure = Integer.parseInt(UpperMeasureText.getText().toString());
             int lowerMeasure = Integer.parseInt(LowerMeasureText.getText().toString());
             String Day = DayText.getText().toString();
-            int Time = Integer.parseInt(String.valueOf(TimeText.getText()));
+            String Time = String.valueOf(TimeText.getText());
 
             // Creating measure instance
             Measurement measurement = new Measurement(upperMeasure, lowerMeasure, Day, Time);
@@ -88,7 +88,7 @@ public class MeasureActivity extends AppCompatActivity {
             String UserID = Objects.requireNonNull(FirebaseAuth.getInstance().getUid());
 
             // adding it into database
-            data_refrence.child("Accounts").child(UserID).child("Measurements").setValue(measurement).addOnSuccessListener(new OnSuccessListener<Void>() {
+            data_refrence.child("Accounts").child(UserID).child("Measurements").push().setValue(measurement).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     // Showing Success Message

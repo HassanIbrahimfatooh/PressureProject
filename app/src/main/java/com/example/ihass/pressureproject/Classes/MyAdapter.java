@@ -69,7 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.textViewShortDesc.setText("Low: " + String.valueOf(measure.getLowerMeasure()));
         holder.textViewRating.setText(measure.getTime());
         holder.textViewPrice.setText(measure.getDay());
-        holder.graphView.addSeries(new BarGraphSeries<DataPoint>(new DataPoint[]{new DataPoint(measure.getTime(), measure.getUpperMeasure())}));
+        holder.graphView.addSeries(new BarGraphSeries<DataPoint>(new DataPoint[]{new DataPoint(Double.parseDouble(measure.getTime()), measure.getUpperMeasure())}));
 
     }
 

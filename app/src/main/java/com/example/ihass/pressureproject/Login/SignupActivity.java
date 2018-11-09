@@ -1,5 +1,6 @@
 package com.example.ihass.pressureproject.Login;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,8 @@ public class SignupActivity extends AppCompatActivity {
     // Data Base Instance
     DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
 
+    private Toast toast;
+
     private EditText NameText, AgeText, EmailText, MobileNumberText, PasswordText, ReEnterPasswordText;
     private Button SignUpButton;
 
@@ -62,6 +65,18 @@ public class SignupActivity extends AppCompatActivity {
         MobileNumberText = (EditText) findViewById(R.id.input_mobile);
         SignUpButton = (Button) findViewById(R.id.btn_signup);
 
+    }
+
+
+    @SuppressLint("ShowToast")
+    public void ShowToast(String message) {
+        try {
+            toast.getView().isShown();
+            toast.setText(message);
+        } catch (Exception e) {
+            toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        }
+        toast.show();
     }
 
 
@@ -98,8 +113,7 @@ public class SignupActivity extends AppCompatActivity {
             //you are now connected to a network
             connected = true;
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Connection Error!",
-                    Toast.LENGTH_SHORT);
+            ShowToast("Connection Error!");
             TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
             toastMessage.setBackgroundColor(Color.RED);
             toastMessage.setTextColor(Color.WHITE);
@@ -190,8 +204,7 @@ public class SignupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show();
-
+                            ShowToast("Account Created Successfully");
                             // Pushing data to the user's ID
                             WriteDataToNewUser(FirebaseAuth.getInstance().getUid(), name, email, password, age, phoneNumber);
 
@@ -225,12 +238,12 @@ public class SignupActivity extends AppCompatActivity {
         data_refrence.child("Accounts").child(userId).child("Personal Data").setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Data is added successfully", Toast.LENGTH_SHORT).show();
+                ShowToast("Data is added successfully");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Error while restoring Data", Toast.LENGTH_SHORT).show();
+                ShowToast("Error while restoring Data");
             }
         });
 
