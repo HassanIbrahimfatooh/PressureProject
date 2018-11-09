@@ -9,13 +9,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ihass.pressureproject.Classes.Measurement;
+import com.example.ihass.pressureproject.Classes.MyAdapter;
 import com.example.ihass.pressureproject.R;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -25,6 +31,12 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
     private Toast toast;
+
+    List<Measurement> measurelist = new ArrayList<>();
+
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +58,7 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        RecyclerViewMethod();
     }
 
     @SuppressLint("ShowToast")
@@ -59,11 +72,24 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         toast.show();
     }
 
+
+    private void RecyclerViewMethod() {
+        // Recycler View
+        mRecyclerView = findViewById(R.id.my_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // specify an adapter
+        mAdapter = new MyAdapter((ArrayList<Measurement>) measurelist);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     public void add_new_measure(View view) {
         ShowToast("Create New Measure");
         Intent NewMeasureIntent = new Intent(this, MeasureActivity.class);
         startActivity(NewMeasureIntent);
-
     }
 
 
