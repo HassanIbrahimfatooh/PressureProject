@@ -8,33 +8,9 @@
     android:fitsSystemWindows="true">
 
 
-    <!-- The main view of the Main-->
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/ViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-        <!-- Floating point for taking a new measure -->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="#ede7e7"
-            android:onClick="add_new_measure"
-            app:fabCustomSize="50dp"
-            app:srcCompat="@drawable/add_new_measure"
-            tools:ignore="RtlHardcoded" />
-
-    </android.support.design.widget.CoordinatorLayout>
-
+    <!-- The main view layout-->
+    <!-- TODO: Make it into a separate layout -->
+    <include layout="@layout/main_view_content" />
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <android.support.design.widget.NavigationView

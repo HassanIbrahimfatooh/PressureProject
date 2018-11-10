@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,12 @@ import android.widget.Toast;
 import com.example.ihass.pressureproject.Classes.Measurement;
 import com.example.ihass.pressureproject.Classes.MyAdapter;
 import com.example.ihass.pressureproject.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +44,18 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
 
+    // Data Base Instance
+    DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference("");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Main View");
         setContentView(R.layout.activity_main_view);
+
+        // Reading data from firebase then convert it into card views.
+        Reading_Measures_From_FireBase();
+        RecyclerViewMethod();
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -58,7 +71,6 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        RecyclerViewMethod();
     }
 
     @SuppressLint("ShowToast")
@@ -72,6 +84,40 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         toast.show();
     }
 
+    void Reading_Measures_From_FireBase() {
+        String UserID = Objects.requireNonNull(FirebaseAuth.getInstance().getUid());
+        data_refrence.child("Accounts").child(UserID).child("Measurements").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
+                // Looping on all instances from database
+                Measurement Measure = dataSnapshot.getValue(Measurement.class);
+                measurelist.add(Measure);
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
+                Log.d(s, "onChildChanged:" + dataSnapshot.getKey());
+                // A data item has changed
+                Measurement Measure = dataSnapshot.getValue(Measurement.class);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void RecyclerViewMethod() {
         // Recycler View
@@ -84,6 +130,10 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         // specify an adapter
         mAdapter = new MyAdapter((ArrayList<Measurement>) measurelist);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+
+    public void GoToMeasureFragment(View view) {
     }
 
     public void add_new_measure(View view) {
@@ -131,6 +181,5 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         getMenuInflater().inflate(R.menu.drawer_view, menu);
         return true;
     }
-
 
 }

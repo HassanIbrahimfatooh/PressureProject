@@ -25,8 +25,9 @@
     <string name="Manage">Manage</string>
     <string name="navigation_drawer_open">nav Open</string>
     <string name="navigation_drawer_close">nav Close</string>
+
     <string name="apple_macbook_air_core_i5_5th_gen">Apple MacBook Air Core i5 5th Gen</string>
-    <string name="_13_3_inch_256_gb">13.3 Inch, 256 GB</string>
+    <string name="_13_3_inch_256_gb">13.3 Inch</string>
     <string name="_4_7">4.7</string>
     <string name="inr_56990">INR 56990</string>
 
