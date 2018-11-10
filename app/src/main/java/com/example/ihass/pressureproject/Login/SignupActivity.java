@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,9 +27,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -213,7 +209,7 @@ public class SignupActivity extends AppCompatActivity {
                             onSignUpSuccess();
 
                         } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                            Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
+                            ShowToast("You are already registered");
 
                             // OnSignUpSuccess
                             progressDialog.dismiss();
@@ -221,7 +217,7 @@ public class SignupActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                            ShowToast(Objects.requireNonNull(task.getException()).getMessage());
 
                             // onSignUpFailed
                             progressDialog.dismiss();
@@ -246,41 +242,10 @@ public class SignupActivity extends AppCompatActivity {
                 ShowToast("Error while restoring Data");
             }
         });
-
-        // For Checking any changes in the table
-        data_refrence.child("Accounts").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                User user = dataSnapshot.getValue(User.class);
-                assert user != null;
-                Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), "User had been Added", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(getApplicationContext(), "User had been Edited", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Toast.makeText(getApplicationContext(), "User had been Removed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(getApplicationContext(), "User had been Moved", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "User had been Cancelled", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void onSignUpFailed() {
-        Toast.makeText(getBaseContext(), "SignUp failed", Toast.LENGTH_LONG).show();
+        ShowToast("SignUp failed");
         SignUpButton.setEnabled(true);
     }
 
@@ -290,4 +255,5 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(FirstIntent);
         finish();
     }
+
 }

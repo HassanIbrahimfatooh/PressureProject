@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.transitionseverywhere.TransitionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,17 +38,22 @@ import java.util.Objects;
 public class MainView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    // Fabs
+    ConstraintLayout transitionsContainer;
+    FloatingActionButton add_new_action_fab, new_photo_fab, new_measure_fab;
+
+    // Instances
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
     private Toast toast;
 
+    // RecyclerView
     List<Measurement> measurelist = new ArrayList<>();
-
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
 
     // Data Base Instance
-    DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference("");
+    DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +61,24 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         setTitle("Main View");
         setContentView(R.layout.activity_main_view);
 
-        // Reading data from firebase then convert it into card views.
+        // RecyclerView
         Reading_Measures_From_FireBase();
         RecyclerViewMethod();
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        // Fabs
+        transitionsContainer = findViewById(R.id.ConstraintLayout);
+        add_new_action_fab = transitionsContainer.findViewById(R.id.add_new_action_fab);
+        new_photo_fab = transitionsContainer.findViewById(R.id.new_photo_fab);
+        new_measure_fab = transitionsContainer.findViewById(R.id.new_measure_fab);
 
+        // Action bar
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
         toggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
+        // Nav bar
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -132,16 +143,27 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         mRecyclerView.setAdapter(mAdapter);
     }
 
-
-    public void GoToMeasureFragment(View view) {
+    public void add_new_action_measure(View view) {
+        if (new_measure_fab.getVisibility() == View.VISIBLE) {
+            TransitionManager.beginDelayedTransition(transitionsContainer);
+            new_photo_fab.setVisibility(View.GONE);
+            new_measure_fab.setVisibility(View.GONE);
+        } else {
+            TransitionManager.beginDelayedTransition(transitionsContainer);
+            new_photo_fab.setVisibility(View.VISIBLE);
+            new_measure_fab.setVisibility(View.VISIBLE);
+        }
     }
 
-    public void add_new_measure(View view) {
+    public void new_measure_fab(View view) {
         ShowToast("Create New Measure");
         Intent NewMeasureIntent = new Intent(this, MeasureActivity.class);
         startActivity(NewMeasureIntent);
     }
 
+    public void new_photo_fab(View view) {
+        ShowToast("Taking new photo");
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

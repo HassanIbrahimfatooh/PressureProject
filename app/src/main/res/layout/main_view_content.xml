@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ViewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,8 +18,71 @@
             android:layout_height="wrap_content" />
     </ScrollView>
 
-    <!-- Including fabs -->
-    <include layout="@layout/fabs" />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <!-- Floating point for taking a new measure -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_new_action_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#ede7e7"
+            android:onClick="add_new_action_measure"
+            app:fabCustomSize="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.974"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/add_new_measure"
+            tools:ignore="RtlHardcoded" />
+
+        <!-- Floating point for taking a new measure -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/new_photo_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#ede7e7"
+            android:onClick="new_photo_fab"
+            android:visibility="gone"
+            app:fabCustomSize="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/add_new_action_fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.974"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/camera"
+            tools:ignore="RtlHardcoded" />
+
+        <!-- Floating point for taking a new measure -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/new_measure_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#ede7e7"
+            android:onClick="new_measure_fab"
+            android:visibility="gone"
+            app:fabCustomSize="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/new_photo_fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.974"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/new_measure"
+            tools:ignore="MissingConstraints,RtlHardcoded" />
+
+    </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>
 
