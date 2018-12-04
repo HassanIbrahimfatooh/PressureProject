@@ -30,5 +30,13 @@
     <string name="_13_3_inch_256_gb">13.3 Inch</string>
     <string name="_4_7">4.7</string>
     <string name="inr_56990">INR 56990</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="message">Message</string>
+    <string name="pressuremeasure">PressureMeasure</string>
+    <string name="sugarmeasure">SugarMeasure</string>
+    <string name="heartmeasure">HeartMeasure</string>
+    <string name="hassan_ibrahim_com">hassan@ibrahim.com</string>
+    <string name="hassan_ibrahim_fatooh_hassan">Hassan ibrahim Fatooh Hassan</string>
 
 </resources>

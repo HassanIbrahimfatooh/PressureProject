@@ -21,6 +21,9 @@ import android.widget.Toast;
 
 import com.example.ihass.pressureproject.Classes.Measurement;
 import com.example.ihass.pressureproject.Classes.MyAdapter;
+import com.example.ihass.pressureproject.Fragments.Heart_Activity;
+import com.example.ihass.pressureproject.Fragments.Pressure_Activity;
+import com.example.ihass.pressureproject.Fragments.Sugar_Activity;
 import com.example.ihass.pressureproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -58,7 +61,7 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Main View");
+        setTitle("History");
         setContentView(R.layout.activity_main_view);
 
         // RecyclerView
@@ -82,6 +85,15 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    // This method is for getting back to the start layout if pressed back
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @SuppressLint("ShowToast")
@@ -166,14 +178,6 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // set item as selected to persist highlight
         menuItem.setChecked(true);
@@ -183,19 +187,33 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         // For example, swap UI fragments here
         int id = menuItem.getItemId();
 
-        if (id == R.id.nav_camera) {
-            ShowToast("Nav Bar clicked");
-        } else if (id == R.id.nav_gallery) {
-            ShowToast("Gallery clicked");
-        } else if (id == R.id.nav_slideshow) {
-            ShowToast("Slide Show clicked");
-        } else if (id == R.id.nav_manage) {
-            ShowToast("Manage clicked");
+        if (id == R.id.nav_PressureMeasure) {
+            startActivity(new Intent(this, Pressure_Activity.class));
+            ShowToast("nav_PressureMeasure");
+        } else if (id == R.id.nav_SugarMeasure) {
+            startActivity(new Intent(this, Sugar_Activity.class));
+            ShowToast("nav_SugarMeasure");
+        } else if (id == R.id.nav_HeartMeasure) {
+            startActivity(new Intent(this, Heart_Activity.class));
+            ShowToast("nav_HeartMeasure");
+        } else if (id == R.id.nav_share) {
+            ShowToast("nav_share");
+        } else if (id == R.id.nav_send) {
+            ShowToast("nav_send");
+        } else if (id == R.id.nav_Logout) {
+            ShowToast("nav_Logout");
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

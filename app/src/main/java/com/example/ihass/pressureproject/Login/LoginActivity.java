@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
         toast.show();
     }
 
-
     public void SignUpForm(View view) {
         Intent SignUpIntent = new Intent(this, SignupActivity.class);
         startActivity(SignUpIntent);
@@ -161,4 +160,5 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 }
