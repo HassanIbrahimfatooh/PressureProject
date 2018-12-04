@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +22,18 @@
         <activity android:name=".Login.SignupActivity" />
         <activity android:name=".Implementation.MainView" />
         <activity android:name=".Login.ForgetPassword" />
-        <activity android:name=".Implementation.MeasureActivity"></activity>
+        <activity
+            android:name=".Implementation.MeasureActivity"
+            android:parentActivityName=".Implementation.MainView" />
+        <activity
+            android:name=".Fragments.Pressure_Activity"
+            android:parentActivityName=".Implementation.MainView" />
+        <activity
+            android:name=".Fragments.Sugar_Activity"
+            android:parentActivityName=".Implementation.MainView"></activity>
+        <activity
+            android:name=".Fragments.Heart_Activity"
+            android:parentActivityName=".Implementation.MainView"></activity>
     </application>
 
 </manifest>

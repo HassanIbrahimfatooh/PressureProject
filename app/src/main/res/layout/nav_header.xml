@@ -3,15 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="?attr/colorPrimaryDark"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:gravity="bottom"
     android:orientation="vertical"
-    android:gravity="bottom">
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/nav_header_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher_round" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/nav_header_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hassan ibrahim Fatooh Hassan"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:paddingTop="8dp"
+        android:text="@string/hassan_ibrahim_fatooh_hassan"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:id="@+id/nav_header_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hassan_ibrahim_com" />
 
 </LinearLayout>

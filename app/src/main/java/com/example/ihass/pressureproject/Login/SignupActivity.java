@@ -1,5 +1,6 @@
 package com.example.ihass.pressureproject.Login;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,9 +27,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -44,6 +41,8 @@ public class SignupActivity extends AppCompatActivity {
 
     // Data Base Instance
     DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
+
+    private Toast toast;
 
     private EditText NameText, AgeText, EmailText, MobileNumberText, PasswordText, ReEnterPasswordText;
     private Button SignUpButton;
@@ -62,6 +61,18 @@ public class SignupActivity extends AppCompatActivity {
         MobileNumberText = (EditText) findViewById(R.id.input_mobile);
         SignUpButton = (Button) findViewById(R.id.btn_signup);
 
+    }
+
+
+    @SuppressLint("ShowToast")
+    public void ShowToast(String message) {
+        try {
+            toast.getView().isShown();
+            toast.setText(message);
+        } catch (Exception e) {
+            toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        }
+        toast.show();
     }
 
 
@@ -98,8 +109,7 @@ public class SignupActivity extends AppCompatActivity {
             //you are now connected to a network
             connected = true;
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Connection Error!",
-                    Toast.LENGTH_SHORT);
+            ShowToast("Connection Error!");
             TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
             toastMessage.setBackgroundColor(Color.RED);
             toastMessage.setTextColor(Color.WHITE);
@@ -190,8 +200,7 @@ public class SignupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show();
-
+                            ShowToast("Account Created Successfully");
                             // Pushing data to the user's ID
                             WriteDataToNewUser(FirebaseAuth.getInstance().getUid(), name, email, password, age, phoneNumber);
 
@@ -200,7 +209,7 @@ public class SignupActivity extends AppCompatActivity {
                             onSignUpSuccess();
 
                         } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                            Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
+                            ShowToast("You are already registered");
 
                             // OnSignUpSuccess
                             progressDialog.dismiss();
@@ -208,7 +217,7 @@ public class SignupActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                            ShowToast(Objects.requireNonNull(task.getException()).getMessage());
 
                             // onSignUpFailed
                             progressDialog.dismiss();
@@ -225,49 +234,18 @@ public class SignupActivity extends AppCompatActivity {
         data_refrence.child("Accounts").child(userId).child("Personal Data").setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Data is added successfully", Toast.LENGTH_SHORT).show();
+                ShowToast("Data is added successfully");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Error while restoring Data", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // For Checking any changes in the table
-        data_refrence.child("Accounts").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                User user = dataSnapshot.getValue(User.class);
-                assert user != null;
-                Toast.makeText(getApplicationContext(), user.toString(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), "User had been Added", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(getApplicationContext(), "User had been Edited", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Toast.makeText(getApplicationContext(), "User had been Removed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(getApplicationContext(), "User had been Moved", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "User had been Cancelled", Toast.LENGTH_SHORT).show();
+                ShowToast("Error while restoring Data");
             }
         });
     }
 
     public void onSignUpFailed() {
-        Toast.makeText(getBaseContext(), "SignUp failed", Toast.LENGTH_LONG).show();
+        ShowToast("SignUp failed");
         SignUpButton.setEnabled(true);
     }
 
@@ -277,4 +255,5 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(FirstIntent);
         finish();
     }
+
 }

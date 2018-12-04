@@ -3,12 +3,12 @@ package com.example.ihass.pressureproject.Classes;
 public class Measurement {
     private int UpperMeasure, LowerMeasure;
     private String Day;
-    private int Time;
+    private String Time;
 
     public Measurement() {
     }
 
-    public Measurement(int upperMeasure, int lowerMeasure, String day, int time) {
+    public Measurement(int upperMeasure, int lowerMeasure, String day, String time) {
         UpperMeasure = upperMeasure;
         LowerMeasure = lowerMeasure;
         Day = day;
@@ -39,11 +39,11 @@ public class Measurement {
         Day = day;
     }
 
-    public int getTime() {
+    public String getTime() {
         return Time;
     }
 
-    public void setTime(int time) {
+    public void setTime(String time) {
         Time = time;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ihass.pressureproject.Login;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText EmailText, PasswordText;
     private Button LogInButton;
 
+    private Toast toast;
+
     // Fire base Authentication
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -42,6 +45,17 @@ public class LoginActivity extends AppCompatActivity {
         PasswordText = (EditText) findViewById(R.id.input_password);
         LogInButton = (Button) findViewById(R.id.btn_login);
 
+    }
+
+    @SuppressLint("ShowToast")
+    public void ShowToast(String message) {
+        try {
+            toast.getView().isShown();
+            toast.setText(message);
+        } catch (Exception e) {
+            toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        }
+        toast.show();
     }
 
     public void SignUpForm(View view) {
@@ -85,8 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             assert user != null;
 
-                            Toast.makeText(getApplicationContext(), "Authenticated Successfully", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getApplicationContext(), user.getEmail(), Toast.LENGTH_LONG).show();
+                            ShowToast("Authenticated Successfully");
 
                             // onLoginSucccess();
                             onLoginSuccess();
@@ -94,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "Authentication Failure", task.getException());
+                            ShowToast("Authentication Failure");
                             Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
 
                             // onLoginFailed();
@@ -131,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "LogIn failed", Toast.LENGTH_LONG).show();
+        ShowToast("LogIn failed");
         LogInButton.setEnabled(true);
     }
 
@@ -147,4 +160,5 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 }

@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.ihass.pressureproject.Implementation.MainView;
 import com.example.ihass.pressureproject.Login.LoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,9 +17,18 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Main");
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if (mFirebaseUser == null) {
+            //Not signed in, launch the Sign In Activity
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        } else {
+            //Signed in, launch the Main View Activity
+            startActivity(new Intent(this, MainView.class));
+            finish();
+        }
 
     }
 }
