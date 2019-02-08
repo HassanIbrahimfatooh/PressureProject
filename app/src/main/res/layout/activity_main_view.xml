@@ -8,7 +8,9 @@
 
 
     <!-- Including the main view layout-->
-    <include layout="@layout/main_view_content" />
+    <include
+        android:id="@+id/container"
+        layout="@layout/main_view_content" />
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <android.support.design.widget.NavigationView

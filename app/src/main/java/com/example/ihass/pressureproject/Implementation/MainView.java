@@ -22,8 +22,9 @@ import android.widget.Toast;
 import com.example.ihass.pressureproject.Classes.Measurement;
 import com.example.ihass.pressureproject.Classes.MyAdapter;
 import com.example.ihass.pressureproject.Fragments.Heart_Activity;
-import com.example.ihass.pressureproject.Fragments.Pressure_Activity;
 import com.example.ihass.pressureproject.Fragments.Sugar_Activity;
+import com.example.ihass.pressureproject.Fragments.testFrag;
+import com.example.ihass.pressureproject.MainActivity;
 import com.example.ihass.pressureproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -57,6 +58,9 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
 
     // Data Base Instance
     DatabaseReference data_refrence = FirebaseDatabase.getInstance().getReference();
+
+    // Fire base Authentication
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +181,7 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         ShowToast("Taking new photo");
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // set item as selected to persist highlight
@@ -188,7 +193,8 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_PressureMeasure) {
-            startActivity(new Intent(this, Pressure_Activity.class));
+//            startActivity(new Intent(this, Pressure_Activity.class));
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new testFrag()).commit();
             ShowToast("nav_PressureMeasure");
         } else if (id == R.id.nav_SugarMeasure) {
             startActivity(new Intent(this, Sugar_Activity.class));
@@ -202,6 +208,9 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
             ShowToast("nav_send");
         } else if (id == R.id.nav_Logout) {
             ShowToast("nav_Logout");
+            mAuth.signOut();
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

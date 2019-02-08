@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="307dp"
         android:layout_height="175dp"
-        android:text="Pressure is the test"
+        android:text="Pressure"
         android:textSize="50sp"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="38dp"
