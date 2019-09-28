@@ -1,9 +1,10 @@
 package com.example.ihass.pressureproject.Fragments;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.ihass.pressureproject.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Pressure_Activity extends AppCompatActivity {
 

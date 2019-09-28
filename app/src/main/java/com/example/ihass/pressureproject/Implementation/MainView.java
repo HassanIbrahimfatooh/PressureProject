@@ -3,16 +3,6 @@ package com.example.ihass.pressureproject.Implementation;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,17 +15,29 @@ import com.example.ihass.pressureproject.Fragments.Heart_Activity;
 import com.example.ihass.pressureproject.Fragments.Pressure_Activity;
 import com.example.ihass.pressureproject.Fragments.Sugar_Activity;
 import com.example.ihass.pressureproject.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.transitionseverywhere.TransitionManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+// import com.transitionseverywhere.TransitionManager;
 
 
 public class MainView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -155,6 +157,7 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    /*
     public void add_new_action_measure(View view) {
         if (new_measure_fab.getVisibility() == View.VISIBLE) {
             TransitionManager.beginDelayedTransition(transitionsContainer);
@@ -166,6 +169,9 @@ public class MainView extends AppCompatActivity implements NavigationView.OnNavi
             new_measure_fab.setVisibility(View.VISIBLE);
         }
     }
+
+     */
+
 
     public void new_measure_fab(View view) {
         ShowToast("Create New Measure");
